@@ -1,0 +1,14 @@
+{
+  "name": "github-views-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "track": "node scripts/track.js",
+    "stats": "node scripts/stats.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.11.1",
+    "@octokit/rest": "^22.0.1"
+  }
+}
