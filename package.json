@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "track": "node scripts/track.js",
-    "stats": "node scripts/stats.js"
+    "stats": "node scripts/stats.js",
+    "generate-svg": "node scripts/generate-svg.js",
+    "sync": "npm run track && npm run generate-svg"
   },
   "dependencies": {
     "@octokit/rest": "^22.0.1",
