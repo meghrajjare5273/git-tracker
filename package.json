@@ -8,7 +8,8 @@
     "stats": "node scripts/stats.js"
   },
   "dependencies": {
+    "@octokit/rest": "^22.0.1",
     "better-sqlite3": "^12.11.1",
-    "@octokit/rest": "^22.0.1"
+    "dotenv": "^17.4.2"
   }
 }

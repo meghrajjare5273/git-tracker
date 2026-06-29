@@ -13,10 +13,13 @@ import { Octokit } from "@octokit/rest";
 import { mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DATA_DIR  = join(__dirname, "../data");
-const DB_PATH   = join(DATA_DIR, "views.db");
+const DATA_DIR = join(__dirname, "../data");
+const DB_PATH = join(DATA_DIR, "views.db");
 
 if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
 
@@ -88,7 +91,7 @@ const octokit = new Octokit({ auth: GH_TOKEN });
 
 // ─── Fetch & Sync ─────────────────────────────────────────────────────────────
 let totalEntries = 0;
-const syncedAt   = new Date().toISOString();
+const syncedAt = new Date().toISOString();
 
 try {
   for (const repo of repos) {
@@ -112,9 +115,9 @@ try {
     }
 
     const entries = views.map((v) => ({
-      repo:    `${GH_OWNER}/${repo}`,
-      date:    v.timestamp.slice(0, 10),
-      views:   v.count,
+      repo: `${GH_OWNER}/${repo}`,
+      date: v.timestamp.slice(0, 10),
+      views: v.count,
       uniques: v.uniques,
     }));
 
@@ -123,14 +126,24 @@ try {
     console.log(`✅  ${count} entries`);
   }
 
-  insertLog.run({ synced_at: syncedAt, repos: repos.join(","), entries: totalEntries, status: "ok", error: null });
+  insertLog.run({
+    synced_at: syncedAt,
+    repos: repos.join(","),
+    entries: totalEntries,
+    status: "ok",
+    error: null,
+  });
   console.log(`\n🎉  Synced ${totalEntries} total entries.`);
-
 } catch (err) {
-  insertLog.run({ synced_at: syncedAt, repos: repos.join(","), entries: totalEntries, status: "error", error: err.message });
+  insertLog.run({
+    synced_at: syncedAt,
+    repos: repos.join(","),
+    entries: totalEntries,
+    status: "error",
+    error: err.message,
+  });
   console.error("\n❌  Fatal error:", err.message);
   process.exit(1);
-
 } finally {
   db.close();
 }
